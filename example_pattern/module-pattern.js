@@ -16,7 +16,7 @@ class Student {
   }
 }
 
-const student = new Student();
-console.log(student.name);
+const student = new Student({});
 console.log(student.grade);
 console.log(student.score);
+console.log(student.name);

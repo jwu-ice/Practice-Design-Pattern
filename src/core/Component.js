@@ -2,36 +2,44 @@ import { $$ } from "../util/util.js";
 
 export default class Component {
   $target;
+  props;
   state;
 
-  constructor($target) {
+  constructor($target, props) {
     this.$target = $target;
+    this.props = props;
     this.setup();
     this.render();
     this.setEvent();
   }
   setup() {}
+
+  mounted() {}
+
   template() {
     return "";
-    //? 이거 너무 비효율적인거 아닌가..? 계속 지웠다가 html다시 다 넣고..
   }
+
   render() {
     this.$target.innerHTML = this.template();
+    this.mounted();
   }
+
   setState(newState) {
     this.state = { ...this.state, ...newState };
     this.render();
   }
+
   setEvent() {}
-  addEvent(selector, eventType, callback) {
+
+  addEvent(eventType, selector, callback) {
     const children = [...$$(selector, this.$target)];
+
     const isTarget = (target) =>
       children.includes(target) || target.closest(selector);
 
     this.$target.addEventListener(eventType, (e) => {
-      if (!isTarget(e.target)) {
-        return false;
-      }
+      if (!isTarget(e.target)) return false;
       callback(e);
     });
   }
